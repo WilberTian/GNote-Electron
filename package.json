@@ -1,7 +1,7 @@
 {
   "name": "GNote-Electron",
   "version": "0.0.1",
-  "description": "react only boilerplate",
+  "description": "simple note based on github",
   "scripts": {
     "lint": "eslint ./src",
     "clean": "rimraf release",
@@ -31,6 +31,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^0.28.1",
+    "electron": "^1.7.11",
     "electron-prebuilt": "^1.4.13",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",
