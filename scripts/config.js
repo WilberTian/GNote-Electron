@@ -19,4 +19,4 @@ exports.sourceFolder = path.join(projectBaseFolder, sourceFolderName);
 exports.buildFolder = path.join(projectBaseFolder, buildFolderName);
 exports.mockServerFolder = path.join(projectBaseFolder, mockServerFolderName);
 
-exports.devEntryHtml = '/html/index.html';
+exports.devEntryHtml = '/html/gnote.html';

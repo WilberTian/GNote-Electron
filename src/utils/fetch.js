@@ -1,7 +1,7 @@
 import url from 'url';
 import fetch from 'isomorphic-fetch';
 
-import { FetchError, ServerError, TimeoutError } from '../errors';
+import { FetchError, TimeoutError } from '../errors';
 import delay from './delay';
 
 const SUCCESS_CODE_LOWER_BOUND = 200;
@@ -10,7 +10,7 @@ const SUCCESS_CODE_HIGHER_BOUND = 300;
 
 // enable cookie in the request
 const basicFetchOptions = {
-    credentials: 'include',
+    credentials: 'same-origin',
 };
 
 const sendRequest = async (config) => {
@@ -33,6 +33,13 @@ const sendRequest = async (config) => {
             });
             break;
         case 'POST':
+            response = await fetch(requestUrl, {
+                ...basicFetchOptions,
+                method: requestMethod,
+                body: JSON.stringify(data),
+            });
+            break;
+        case 'PUT':
             response = await fetch(requestUrl, {
                 ...basicFetchOptions,
                 method: requestMethod,
@@ -64,12 +71,6 @@ export default async (config) => {
         throw new FetchError(response);
     } else {
         const result = await response.json();
-        if (result.code !== 0) {
-            throw new ServerError(result);
-        } else if (!result.success) {
-            throw new ServerError(result);
-        } else {
-            return result.data;
-        }
+        return result;
     }
 };

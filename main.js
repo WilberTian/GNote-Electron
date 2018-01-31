@@ -18,9 +18,9 @@ function createWindow () {
 
   // and load the index.html of the app.
   if (process.env.NODE_ENV === 'production') {
-    mainWindow.loadURL('file://' + __dirname + '/release/html/index.html');
+    mainWindow.loadURL('file://' + __dirname + '/release/html/gnote.html');
   } else {
-    mainWindow.loadURL('http://' + configs.developmentIP + ':' + configs.developmentPort + '/html/index.html');
+    mainWindow.loadURL('http://' + configs.developmentIP + ':' + configs.developmentPort + '/html/gnote.html');
   }
   
 
