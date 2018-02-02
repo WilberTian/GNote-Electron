@@ -1,3 +1,6 @@
+import { Base64 } from 'js-base64';
+import { markdown } from 'markdown';
+
 import services from '../../services/contentService';
 
 const domain = {
@@ -43,7 +46,7 @@ const domain = {
             domain.dispatch((model) => {
                 return {
                     ...model,
-                    activeNoteContent: result.content,
+                    activeNoteContent: markdown.toHTML(Base64.decode(result.content)),
                     contentLoading: false
                 };
             });

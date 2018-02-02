@@ -47,6 +47,15 @@ export default class GNoteComponent extends PureComponent {
         const noteContent = await getNoteContent(item.key);
     }
 
+    _convertToHTML(rawHTML) {
+        function createMarkup() {
+            return { __html: rawHTML };
+        }
+        return (
+            <div className="markdown-body" dangerouslySetInnerHTML={createMarkup()} />
+        );
+    }
+
     render() {
         const { contentList, activeNoteContent } = this.props;
 
@@ -82,7 +91,7 @@ export default class GNoteComponent extends PureComponent {
                         />
                     </Header>
                     <Content>
-                        {activeNoteContent}
+                        {::this._convertToHTML(activeNoteContent)}
                     </Content>
                 </Layout>
             </Layout>
