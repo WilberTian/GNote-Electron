@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Input, Button, Icon } from 'antd';
+import { Input, Button } from 'antd';
 
 import DomainComponentCreator from '../../utils/DomainComponentCreator';
 import DomainMapper from '../../utils/DomainMapper';
@@ -12,8 +12,8 @@ import './create-gnote-container.less';
 const ButtonGroup = Button.Group;
 
 const mapper = {
-    modelMapper: (model) => {},
-    actionMapper: (action) => {}
+    modelMapper: () => {},
+    actionMapper: () => {}
 };
 
 @DomainComponentCreator(CreateGNoteDomain)

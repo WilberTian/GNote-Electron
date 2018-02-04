@@ -2,6 +2,7 @@
   "name": "GNote-Electron",
   "version": "0.0.1",
   "description": "simple note based on github",
+  "main": "main.js",
   "scripts": {
     "lint": "eslint ./src",
     "clean": "rimraf release",
@@ -42,6 +43,7 @@
     "github-markdown-css": "^2.10.0",
     "html-webpack-plugin": "^2.28.0",
     "ip": "^1.1.5",
+    "is-electron": "^2.1.0",
     "isomorphic-fetch": "^2.2.1",
     "js-base64": "^2.4.3",
     "less": "^2.7.2",

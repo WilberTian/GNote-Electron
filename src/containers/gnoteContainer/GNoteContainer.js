@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import isElectron from 'is-electron';
 import { Layout, Icon, Button, Spin } from 'antd';
 
 import DomainComponentCreator from '../../utils/DomainComponentCreator';
@@ -10,6 +11,7 @@ import GNoteListComponent from './components/GNoteListComponent';
 import './gnote-container.less';
 
 const { Header, Sider, Content } = Layout;
+
 
 const mapper = {
     modelMapper: (model) => {
@@ -29,8 +31,36 @@ const mapper = {
 @DomainMapper(mapper)
 export default class GNoteComponent extends PureComponent {
     state = {
-        collapsed: false
+        collapsed: false,
+        onlineStatus: false
     };
+
+    componentWillMount() {
+        if (isElectron()) {
+            window.addEventListener('online', this._updateOnlineStatus);
+            window.addEventListener('offline', this._updateOnlineStatus);
+
+            this._updateOnlineStatus();
+        }
+    }
+
+    componentWillUmount() {
+        if (isElectron()) {
+            window.removeEventListener('online', this._updateOnlineStatus);
+            window.removeEventListener('offline', this._updateOnlineStatus);
+        }
+    }
+
+    _updateOnlineStatus() {
+        const { ipcRenderer } = window.require('electron');
+
+        const onlineStatus = navigator.onLine ? 'online' : 'offline';
+        ipcRenderer.send('online-status-change-event', onlineStatus);
+
+        this.setState({
+            onlineStatus
+        });
+    }
 
     _toggle() {
         this.setState({
@@ -46,9 +76,11 @@ export default class GNoteComponent extends PureComponent {
         function createMarkup() {
             return { __html: rawHTML };
         }
+        /* eslint-disable */
         return (
             <div className="markdown-body" dangerouslySetInnerHTML={createMarkup()} />
         );
+        /* eslint-enable */
     }
 
     render() {
@@ -73,11 +105,15 @@ export default class GNoteComponent extends PureComponent {
                         />
                         <Button
                           type="primary"
+                          size="small"
+                          shape="circle"
                           icon="plus"
                           onClick={::this._createGNote}
-                        >
-                            Create
-                        </Button>
+                        />
+                        {this.state.onlineStatus ?
+                            <span className="online-status online">Online</span> :
+                            <span className="online-status offline">Offline</span>
+                        }
                     </Header>
                     <Content>
                         <Spin spinning={contentLoading}>

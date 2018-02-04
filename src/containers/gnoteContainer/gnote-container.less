@@ -1,5 +1,7 @@
 .gnote-container {
     .ant-layout-header {
+        display: flex;
+        align-items: center;
         background-color: #fff;
         padding: 0px;
         height: 36px;
@@ -15,6 +17,40 @@
 
         .trigger:hover {
             color: #108ee9;
+        }
+
+        .online-status {
+            display: block;
+            position: absolute;
+            right: 12px;
+        }
+
+        .online-status::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: -12px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .online {
+            color: green;
+        }
+
+        .online::after {
+            background-color: green;
+            box-shadow: 0px 0px 2px 1px green;
+        }
+
+        .offline {
+            color: red;
+        }
+
+        .offline::after {
+            background-color: red;
+            box-shadow: 0px 0px 2px 1px red;
         }
     }
 

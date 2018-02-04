@@ -5,6 +5,7 @@ var electron = require('electron');
 var app = electron.app;
 // Module to create native browser window.
 var BrowserWindow = electron.BrowserWindow;
+var ipcMain = electron.ipcMain;
 
 var configs = require('./scripts/config');
 
@@ -14,7 +15,10 @@ let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600});
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600
+  });
 
   // and load the index.html of the app.
   if (process.env.NODE_ENV === 'production') {
@@ -23,7 +27,6 @@ function createWindow () {
     mainWindow.loadURL('http://' + configs.developmentIP + ':' + configs.developmentPort + '/html/gnote.html');
   }
   
-
   // Open the DevTools.
   if (process.env.NODE_ENV === 'development') {
    mainWindow.webContents.openDevTools();
@@ -57,4 +60,8 @@ app.on('activate', function () {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+ipcMain.on('online-status-change-event', function(event, status) {
+  console.log('GNote is :' + status);
 });

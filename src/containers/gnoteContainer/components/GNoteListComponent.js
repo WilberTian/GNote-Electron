@@ -27,7 +27,7 @@ export default class GNoteListComponent extends PureComponent {
 
     async _onMenuItemSelect(item) {
         const { getNoteContent } = this.props;
-        const noteContent = await getNoteContent(item.key);
+        await getNoteContent(item.key);
     }
 
     render() {

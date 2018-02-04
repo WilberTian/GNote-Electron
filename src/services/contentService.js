@@ -1,6 +1,7 @@
 import fetch from '../utils/fetch';
 
-const prefix = 'https://api.github.com/repos/WilberTian/GNote-Contents';
+// const prefix = 'https://api.github.com/repos/WilberTian/GNote-Contents';
+const prefix = '/api';
 
 export default {
     getNoteList: async () => {
