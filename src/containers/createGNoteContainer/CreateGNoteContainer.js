@@ -19,6 +19,15 @@ const mapper = {
 @DomainComponentCreator(CreateGNoteDomain)
 @DomainMapper(mapper)
 export default class CreateGNoteContainer extends PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            commitMsg: '',
+            content: ''
+        };
+    }
+
     render() {
         return (
             <div className="create-gnote-container">

@@ -17,6 +17,11 @@
 	.md-editor {
 		resize: none;
 		width: 100%;
+		background: linear-gradient(#fff 0, #fff 50%, #d7d7d7 50%, #d7d7d7 100%);
+    	background-size: 100% 40px;
+    	background-attachment: local;
+    	line-height: 20px;
+    	padding: 0 6px;
 	}
 
 	.preview-content {
@@ -25,7 +30,10 @@
 	    height: 100%;
 	    border: 1px solid #d9d9d9;
     	border-radius: 4px;
+	}
 
-    	padding: 12px;
+	.preview-content .markdown-body {
+		padding: 12px;
+    	max-width: 100%;
 	}
 }

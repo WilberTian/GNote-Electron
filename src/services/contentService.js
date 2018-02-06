@@ -22,11 +22,11 @@ export default {
         return data;
     },
 
-    createNote: async (msg, content) => {
+    createNote: async (commitMsg, content) => {
         const fetchConfig = {
             url: `${prefix}/contents`,
             data: {
-                message: msg,
+                message: commitMsg,
                 content
             }
         };
