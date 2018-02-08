@@ -1,5 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Spin, Menu, Icon } from 'antd';
+import { Spin } from 'antd';
+
+import GNoteItemComponent from './GNoteItemComponent';
+
+import './gnote-list-component.less';
 
 import DomainMapper from '../../../utils/DomainMapper';
 
@@ -12,8 +16,7 @@ const mapper = {
     },
     actionMapper: (action) => {
         return {
-            getNoteList: action.getNoteList,
-            getNoteContent: action.getNoteContent
+            getNoteList: action.getNoteList
         };
     }
 };
@@ -25,31 +28,19 @@ export default class GNoteListComponent extends PureComponent {
         await getNoteList();
     }
 
-    async _onMenuItemSelect(item) {
-        const { getNoteContent } = this.props;
-        await getNoteContent(item.key);
-    }
-
     render() {
         const { contentList, listLoading } = this.props;
 
         return (
-            <Spin spinning={listLoading}>
-                <Menu
-                  theme="dark"
-                  mode="inline"
-                  onSelect={::this._onMenuItemSelect}
-                >
+            <div className="gnote-list-component">
+                <Spin spinning={listLoading}>
                     {contentList.length > 0 && contentList.map((contentItem) => {
                         return (
-                            <Menu.Item key={contentItem.path}>
-                                <Icon type="user" />
-                                <span>{contentItem.name}</span>
-                            </Menu.Item>
+                            <GNoteItemComponent key={contentItem.path} contentItem={contentItem} />
                         );
                     })}
-                </Menu>
-            </Spin>
+                </Spin>
+            </div>
         );
     }
 }
