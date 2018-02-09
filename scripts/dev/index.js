@@ -1,7 +1,6 @@
 const url = require('url');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const openBrowser = require('react-dev-utils/openBrowser');
 
 const webpackConfig = require('../webpack.config');
 import * as configs from '../config';
@@ -40,10 +39,7 @@ compiler.plugin('done', () => {
             console.log(err);
         } else {
             console.log('Listening at : http://' + configs.developmentIP + ':' + configs.developmentPort);
-            if (!browserOpened) {
-                browserOpened = true;
-                openBrowser('http://' + configs.developmentIP + ':' + configs.developmentPort + configs.devEntryHtml);
-            }
+            console.log('run "npm run dev" to start electron in development mode');
         }
     });
 });

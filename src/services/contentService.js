@@ -1,7 +1,9 @@
 import fetch from '../utils/fetch';
 
+import * as configs from '../../scripts/config';
+
 // const prefix = 'https://api.github.com/repos/WilberTian/GNote-Contents';
-const prefix = '/api';
+const prefix = `http://${configs.developmentIP}:${configs.developmentPort}/api`;
 
 export default {
     getNoteList: async () => {

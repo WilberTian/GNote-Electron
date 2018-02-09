@@ -125,6 +125,7 @@ const fontLoader = {
 
 // default webpack config
 let webpackConfig = {
+    target: 'electron-renderer',
     entry: {
         [COMMON_CHUNK_NAME]: [
             'babel-polyfill',
