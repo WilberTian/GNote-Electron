@@ -36,7 +36,7 @@ export default class GNoteListComponent extends PureComponent {
                 <Spin spinning={listLoading}>
                     {contentList.length > 0 && contentList.map((contentItem) => {
                         return (
-                            <GNoteItemComponent key={contentItem.path} contentItem={contentItem} />
+                            <GNoteItemComponent key={contentItem.name} contentItem={contentItem} />
                         );
                     })}
                 </Spin>

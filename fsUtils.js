@@ -2,20 +2,19 @@ var path = require('path');
 var fs = require('fs');
 
 var gnotesFolder = '_gnotes';
-var gnotesPath = path.join(__dirname, gnotesFolder);
-
+var gnotesPath = path.resolve(gnotesFolder);
 
 function isFileExist(path) {
     try {
-        fs.accessSync(path,fs.F_OK);
+        fs.accessSync(path, fs.F_OK);
     } catch(e) {
         return false;
     }
     return true;
 }
 
-function isLocalDraft(content) {
-    if ('commitMsg' in content) {
+function isLocalDraft(data) {
+    if ('commitMsg' in data) {
         return true;
     }
 
@@ -29,32 +28,38 @@ function getLocalGNoteList() {
         var gnoteItemPath = path.join(gnotesPath, gnoteItem);
         var gnoteItemContent = fs.readFileSync(gnoteItemPath);
 
-        gnoteList.push({
-            isDraft: isLocalDraft,
-            content: JSON.parse(gnoteItemContent)
-        });
+        var gnoteItemObj = JSON.parse(gnoteItemContent);
+        gnoteItemObj.isDraft = isLocalDraft(gnoteItemObj);
+        gnoteList.push(gnoteItemObj);
     });
 
     return gnoteList;
 }
 
-function createLocalGNote(name, content) {
+function getLocalGNoteContent(name) {
+    var gnoteItemPath = path.join(gnotesPath, name);
+    var fileContentObj = JSON.parse(fs.readFileSync(gnoteItemPath, 'utf8'));
+    return fileContentObj.content;
+}
+
+function createLocalGNote(name, data) {
     var gnoteItemPath = path.join(gnotesPath, name);
     if(isFileExist(gnoteItemPath)) {
 
     } else {
-        fs.writeFileSync(gnoteItemPath, content);
+        fs.writeFileSync(gnoteItemPath, data);
     }
 }
 
-function updateLocalGNote(name, content) {
+function updateLocalGNote(name, data) {
     var gnoteItemPath = path.join(gnotesPath, name);
-    fs.writeFileSync(gnoteItemPath, content);
+    fs.writeFileSync(gnoteItemPath, data);
 }
 
 
 var gnoteUtils = {
     getLocalGNoteList,
+    getLocalGNoteContent,
     createLocalGNote,
     updateLocalGNote
 };

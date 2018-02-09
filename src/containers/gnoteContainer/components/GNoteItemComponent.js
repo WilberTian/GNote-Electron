@@ -1,11 +1,18 @@
 import React, { PureComponent } from 'react';
+import { Button } from 'antd';
 
 import './gnote-item-component.less';
 
 import DomainMapper from '../../../utils/DomainMapper';
 
+const ButtonGroup = Button.Group;
+
 const mapper = {
-    modelMapper: () => {},
+    modelMapper: (model) => {
+        return {
+            activeNoteName: model.activeNoteName
+        };
+    },
     actionMapper: (action) => {
         return {
             getNoteContent: action.getNoteContent
@@ -17,15 +24,28 @@ const mapper = {
 export default class GNoteItemComponent extends PureComponent {
     async _onGNoteItemSelect() {
         const { getNoteContent, contentItem } = this.props;
-        await getNoteContent(contentItem.path);
+        await getNoteContent(contentItem.name);
     }
 
     render() {
-        const { contentItem } = this.props;
+        const { contentItem, activeNoteName } = this.props;
         /* eslint-disable */
         return (
-            <div className="gnote-item-component" onClick={::this._onGNoteItemSelect}>
-                {contentItem.name}
+            <div
+              className={`gnote-item-component ${activeNoteName === contentItem.name ? 'active' : ''}`}
+              
+            >
+                <span className="item-name" onClick={::this._onGNoteItemSelect}>
+                    {contentItem.name}
+                </span>
+                <span className="item-status">
+                    {contentItem.isDraft}
+                </span>
+                <ButtonGroup className="item-btn-group">
+                    <Button icon="edit" />
+                     <Button icon="cloud-upload" />
+                    <Button icon="cloud-download" />
+                </ButtonGroup>
             </div>
         );
         /* eslint-enable */

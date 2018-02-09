@@ -2,6 +2,32 @@
 	position: relative;
 	height: 56px;
 	margin-left: 10px;
+    border-right: 3px solid transparent;
+    
+
+    .item-name {
+        display: block;
+        cursor: pointer;
+        color: #108ee9;
+        font-size: 14px;
+        margin-bottom: 6px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .item-btn-group {
+        float: right;
+        margin-right: 6px;
+
+        button {
+            height: 20px;
+        }
+    }
+}
+
+.gnote-item-component.active {
+    border-right: 3px solid #108ee9;
 }
 
 .gnote-item-component::after {

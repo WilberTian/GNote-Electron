@@ -1,7 +1,8 @@
 import { Base64 } from 'js-base64';
 import { markdown } from 'markdown';
 
-import services from '../../services/contentService';
+// import services from '../../services/contentService';
+import localService from '../../services/localService';
 
 const domain = {
 
@@ -9,6 +10,7 @@ const domain = {
         contentList: [],
         listLoading: false,
 
+        activeNoteName: '',
         activeNoteContent: '',
         contentLoading: false
     },
@@ -22,7 +24,7 @@ const domain = {
                 };
             });
 
-            const result = await services.getNoteList();
+            const result = localService.getLocalNoteList();
 
             domain.dispatch((model) => {
                 return {
@@ -33,7 +35,7 @@ const domain = {
             });
         },
 
-        getNoteContent: async (path) => {
+        getNoteContent: (name) => {
             domain.dispatch((model) => {
                 return {
                     ...model,
@@ -41,19 +43,16 @@ const domain = {
                 };
             });
 
-            const result = await services.getNoteContent(path);
+            const content = localService.getLocalNoteContent(name);
 
             domain.dispatch((model) => {
                 return {
                     ...model,
-                    activeNoteContent: markdown.toHTML(Base64.decode(result.content)),
+                    activeNoteName: name,
+                    activeNoteContent: markdown.toHTML(Base64.decode(content)),
                     contentLoading: false
                 };
             });
-        },
-
-        createNote: async () => {
-            //
         },
 
         updateNote: async () => {

@@ -1,4 +1,4 @@
-import services from '../../services/contentService';
+import localService from '../../services/localService';
 
 const domain = {
 
@@ -8,9 +8,8 @@ const domain = {
     },
 
     action: {
-        createNote: async (commitMsg, content) => {
-            const result = await services.createNote(commitMsg, content);
-            return result;
+        createNote: (name, commitMsg, content) => {
+            localService.createLocalNote(name, commitMsg, content);
         }
     }
 };
