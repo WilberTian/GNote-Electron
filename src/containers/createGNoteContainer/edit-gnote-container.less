@@ -1,11 +1,13 @@
-.create-gnote-container {
+.edit-gnote-container {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
 	padding: 10px;
 
+	animation: trans-in .5s;
+
 	.basic-info-wrapper {
-	
+
 		.file-name-input {
 			display: inline-block;
 			width: 30%;
@@ -26,4 +28,14 @@
 			flex: 1;
 		}
 	}
+}
+
+
+@keyframes trans-in {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
 }

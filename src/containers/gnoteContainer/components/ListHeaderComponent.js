@@ -5,7 +5,7 @@ import './list-header-component.less';
 
 export default class ListHeaderComponent extends PureComponent {
     _createGNote() {
-        location.hash = '/create';
+        location.hash = '/edit';
     }
 
     render() {

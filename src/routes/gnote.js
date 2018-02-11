@@ -1,12 +1,12 @@
 import App from '../containers/common/App';
 import GNoteContainer from '../containers/gnoteContainer/GNoteContainer';
-import CreateGNoteContainer from '../containers/createGNoteContainer/CreateGNoteContainer';
+import EditGNoteContainer from '../containers/createGNoteContainer/EditGNoteContainer';
 
 import NotFound from './NotFound';
 
-const createGNoteRoute = {
-    path: '/create',
-    component: CreateGNoteContainer
+const editGNoteRoute = {
+    path: '/edit',
+    component: EditGNoteContainer
 };
 
 const notFountRoute = {
@@ -21,7 +21,7 @@ const route = {
         component: GNoteContainer,
     },
     childRoutes: [
-        createGNoteRoute,
+        editGNoteRoute,
         notFountRoute
     ]
 };

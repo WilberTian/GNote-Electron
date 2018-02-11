@@ -47,6 +47,7 @@ export default class MDEditorComponent extends PureComponent {
                   checkedChildren={<Icon type="eye-o" />}
                   unCheckedChildren={<Icon type="edit" />}
                   onChange={::this._toggleEditorMode}
+                  size="small"
                 />
                 { this.state.editMode && <TextArea
                   value={this.state.content}

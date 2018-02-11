@@ -1,36 +1,56 @@
 import React, { PureComponent } from 'react';
 import { Input, Button } from 'antd';
+import { Base64 } from 'js-base64';
 
 import DomainComponentCreator from '../../utils/DomainComponentCreator';
 import DomainMapper from '../../utils/DomainMapper';
-import CreateGNoteDomain from './CreateGNoteDomain';
+import EditGNoteDomain from './EditGNoteDomain';
 
 import MDEditorComponent from '../../components/MDEditorComponent';
 
-import './create-gnote-container.less';
+import './edit-gnote-container.less';
 
 const ButtonGroup = Button.Group;
 
 const mapper = {
-    modelMapper: () => {},
+    modelMapper: (model) => {
+        return {
+            activeNoteName: model.activeNoteName,
+            activeNoteContent: model.activeNoteContent
+        };
+    },
     actionMapper: (action) => {
         return {
-            createNote: action.createNote
+            saveNote: action.saveNote,
+            getNoteContent: action.getNoteContent
         };
     }
 };
 
-@DomainComponentCreator(CreateGNoteDomain)
+@DomainComponentCreator(EditGNoteDomain)
 @DomainMapper(mapper)
-export default class CreateGNoteContainer extends PureComponent {
+export default class EditGNoteContainer extends PureComponent {
     constructor(props) {
         super(props);
 
         this.state = {
             name: '',
             commitMsg: '',
-            content: ''
+            content: '',
+            createMode: true
         };
+    }
+
+    componentWillMount() {
+        const { location, getNoteContent } = this.props;
+        if (location.query.name !== undefined) {
+            const content = getNoteContent(location.query.name);
+            this.setState({
+                name: location.query.name,
+                content: Base64.decode(content),
+                createMode: false
+            });
+        }
     }
 
     _onNameChange(e) {
@@ -52,9 +72,9 @@ export default class CreateGNoteContainer extends PureComponent {
     }
 
     _onSave() {
-        const { createNote } = this.props;
+        const { saveNote } = this.props;
         const { name, commitMsg, content } = this.state;
-        createNote(name, commitMsg, content);
+        saveNote(name, commitMsg, content);
 
         history.back();
     }
@@ -65,13 +85,14 @@ export default class CreateGNoteContainer extends PureComponent {
 
     render() {
         return (
-            <div className="create-gnote-container">
+            <div className="edit-gnote-container">
                 <div className="basic-info-wrapper">
                     <Input
                       className="file-name-input"
                       placeholder="file name"
                       value={this.state.name}
                       onChange={::this._onNameChange}
+                      disabled={!this.state.createMode}
                     />
                     <Input
                       className="commit-msg-input"

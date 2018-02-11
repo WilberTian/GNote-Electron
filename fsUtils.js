@@ -29,8 +29,10 @@ function getLocalGNoteList() {
         var gnoteItemContent = fs.readFileSync(gnoteItemPath);
 
         var gnoteItemObj = JSON.parse(gnoteItemContent);
-        gnoteItemObj.isDraft = isLocalDraft(gnoteItemObj);
-        gnoteList.push(gnoteItemObj);
+        gnoteList.push({
+            isDraft: isLocalDraft(gnoteItemObj),
+            name: gnoteItemObj.name
+        });
     });
 
     return gnoteList;
@@ -44,11 +46,7 @@ function getLocalGNoteContent(name) {
 
 function createLocalGNote(name, data) {
     var gnoteItemPath = path.join(gnotesPath, name);
-    if(isFileExist(gnoteItemPath)) {
-
-    } else {
-        fs.writeFileSync(gnoteItemPath, data);
-    }
+    fs.writeFileSync(gnoteItemPath, data);
 }
 
 function updateLocalGNote(name, data) {

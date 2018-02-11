@@ -23,6 +23,7 @@ export default class GNoteComponent extends PureComponent {
                     <ContentHeaderComponent />
                     <GNoteContentComponent />
                 </div>
+                <div className="blocker" />
             </div>
         );
     }

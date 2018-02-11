@@ -1,7 +1,19 @@
 import React, { PureComponent } from 'react';
 
+import DomainMapper from '../../../utils/DomainMapper';
+
 import './content-header-component.less';
 
+const mapper = {
+    modelMapper: (model) => {
+        return {
+            activeNoteName: model.activeNoteName
+        };
+    },
+    actionMapper: () => {}
+};
+
+@DomainMapper(mapper)
 export default class ContentHeaderComponent extends PureComponent {
     state = {
         onlineStatus: false
@@ -31,8 +43,13 @@ export default class ContentHeaderComponent extends PureComponent {
     }
 
     render() {
+        const { activeNoteName } = this.props;
+
         return (
             <div className="content-header-component">
+                <span className="active-note-name">
+                    {activeNoteName}
+                </span>
                 {this.state.onlineStatus ?
                     <span className="online-status online">Online</span> :
                     <span className="online-status offline">Offline</span>

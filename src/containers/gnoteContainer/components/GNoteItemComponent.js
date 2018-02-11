@@ -27,6 +27,10 @@ export default class GNoteItemComponent extends PureComponent {
         await getNoteContent(contentItem.name);
     }
 
+    _editGNoteItem(name) {
+        location.hash = `/edit?name=${name}`;
+    }
+
     render() {
         const { contentItem, activeNoteName } = this.props;
         /* eslint-disable */
@@ -42,8 +46,8 @@ export default class GNoteItemComponent extends PureComponent {
                     {contentItem.isDraft}
                 </span>
                 <ButtonGroup className="item-btn-group">
-                    <Button icon="edit" />
-                     <Button icon="cloud-upload" />
+                    <Button icon="edit" onClick={() => { this._editGNoteItem(contentItem.name); }} />
+                    <Button icon="cloud-upload" />
                     <Button icon="cloud-download" />
                 </ButtonGroup>
             </div>
