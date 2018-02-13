@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
-import { Input, Button, message } from 'antd';
+import { Input, Button, message, Checkbox } from 'antd';
 
 import DomainComponentCreator from '../../utils/DomainComponentCreator';
 import DomainMapper from '../../utils/DomainMapper';
 import EditGNoteDomain from './EditGNoteDomain';
 
 import MDEditorComponent from '../../components/MDEditorComponent';
+
+import debounce from '../../utils/debounce';
 
 import './edit-gnote-container.less';
 
@@ -21,7 +23,7 @@ const mapper = {
     actionMapper: (action) => {
         return {
             saveNote: action.saveNote,
-            getNoteContent: action.getNoteContent
+            getNoteData: action.getNoteData
         };
     }
 };
@@ -36,20 +38,32 @@ export default class EditGNoteContainer extends PureComponent {
             name: '',
             commitMsg: '',
             content: '',
-            createMode: true
+            createMode: true,
+            isAutoSave: true
         };
+
+        this._autoSaveHandler = debounce(::this._autoSave, 5000);
     }
 
     componentWillMount() {
-        const { location, getNoteContent } = this.props;
+        const { location, getNoteData } = this.props;
         if (location.query.name !== undefined) {
-            const content = getNoteContent(location.query.name);
+            const data = getNoteData(location.query.name);
             this.setState({
                 name: location.query.name,
-                content,
+                content: data.content,
+                commitMsg: data.commitMsg,
                 createMode: false
             });
         }
+    }
+
+    shouldComponentUpdate() {
+        if (!this.state.createMode) {
+            this._autoSaveHandler();
+        }
+
+        return true;
     }
 
     _onNameChange(e) {
@@ -86,6 +100,26 @@ export default class EditGNoteContainer extends PureComponent {
         history.back();
     }
 
+    _autoSave() {
+        if (this.state.isAutoSave) {
+            const { saveNote } = this.props;
+            const { name, commitMsg, content } = this.state;
+
+            try {
+                saveNote(false, name, commitMsg, content);
+                message.success('Auto saved!', 2);
+            } catch (e) {
+                message.error(e.message, 5);
+            }
+        }
+    }
+
+    _toggleAutoSave(e) {
+        this.setState({
+            isAutoSave: e.target.value
+        });
+    }
+
     render() {
         return (
             <div className="edit-gnote-container">
@@ -106,7 +140,13 @@ export default class EditGNoteContainer extends PureComponent {
                 </div>
                 <MDEditorComponent content={this.state.content} callback={::this._onContentChange} />
                 <div>
-                    <ButtonGroup>
+                    <Checkbox
+                      onChange={::this._toggleAutoSave}
+                      checked={this.state.isAutoSave}
+                    >
+                        AutoSave
+                    </Checkbox>
+                    <ButtonGroup className="btn-group">
                         <Button icon="save" onClick={::this._onSave} disabled={this.state.name === ''}>save</Button>
                         <Button onClick={::this._onCancel}>Cancel</Button>
                     </ButtonGroup>

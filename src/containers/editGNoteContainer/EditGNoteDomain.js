@@ -13,8 +13,8 @@ const domain = {
             }
         },
 
-        getNoteContent: (name) => {
-            return localService.getLocalNoteContent(name);
+        getNoteData: (name) => {
+            return localService.getLocalNoteData(name);
         }
     }
 };

@@ -42,11 +42,11 @@ export const getLocalGNoteList = () => {
     return gnoteList;
 };
 
-export const getLocalGNoteContent = (name) => {
+export const getLocalGNoteData = (name) => {
     const gnoteItemPath = path.join(gnotesPath, name);
     const fileContentObj = JSON.parse(fs.readFileSync(gnoteItemPath, 'utf8'));
 
-    return fileContentObj.content;
+    return fileContentObj;
 };
 
 export const createLocalGNote = (name, data) => {

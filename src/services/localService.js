@@ -7,9 +7,12 @@ export default {
         return gnoteFsUtils.getLocalGNoteList();
     },
 
-    getLocalNoteContent: (name) => {
-        const encodedContent = gnoteFsUtils.getLocalGNoteContent(name);
-        return Base64.decode(encodedContent);
+    getLocalNoteData: (name) => {
+        const data = gnoteFsUtils.getLocalGNoteData(name);
+        return {
+            ...data,
+            content: Base64.decode(data.content)
+        };
     },
 
     createLocalNote: (name, commitMsg, content) => {

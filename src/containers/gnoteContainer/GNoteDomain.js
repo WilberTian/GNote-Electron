@@ -42,7 +42,7 @@ const domain = {
                 };
             });
 
-            const content = localService.getLocalNoteContent(name);
+            const content = localService.getLocalNoteData(name).content;
 
             domain.dispatch((model) => {
                 return {
