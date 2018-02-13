@@ -1,6 +1,6 @@
 import App from '../containers/common/App';
 import GNoteContainer from '../containers/gnoteContainer/GNoteContainer';
-import EditGNoteContainer from '../containers/createGNoteContainer/EditGNoteContainer';
+import EditGNoteContainer from '../containers/editGNoteContainer/EditGNoteContainer';
 
 import NotFound from './NotFound';
 

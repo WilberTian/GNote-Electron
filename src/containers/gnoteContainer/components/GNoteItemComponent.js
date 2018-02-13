@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 
 import './gnote-item-component.less';
 
@@ -24,7 +24,11 @@ const mapper = {
 export default class GNoteItemComponent extends PureComponent {
     async _onGNoteItemSelect() {
         const { getNoteContent, contentItem } = this.props;
-        await getNoteContent(contentItem.name);
+        try {
+            await getNoteContent(contentItem.name);
+        } catch (e) {
+            message.error(e.message, 5);
+        }
     }
 
     _editGNoteItem(name) {

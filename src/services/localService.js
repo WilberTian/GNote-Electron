@@ -1,27 +1,30 @@
-import gnoteUtils from '../../fsUtils';
+import { Base64 } from 'js-base64';
+
+import * as gnoteFsUtils from '../utils/fsUtils';
 
 export default {
     getLocalNoteList: () => {
-        return gnoteUtils.getLocalGNoteList();
+        return gnoteFsUtils.getLocalGNoteList();
     },
 
     getLocalNoteContent: (name) => {
-        return gnoteUtils.getLocalGNoteContent(name);
+        const encodedContent = gnoteFsUtils.getLocalGNoteContent(name);
+        return Base64.decode(encodedContent);
     },
 
     createLocalNote: (name, commitMsg, content) => {
-        gnoteUtils.createLocalGNote(name, JSON.stringify({
+        gnoteFsUtils.createLocalGNote(name, JSON.stringify({
             name,
             commitMsg,
-            content
+            content: Base64.encode(content)
         }));
     },
 
     updateLocalNote: (name, commitMsg, content) => {
-        gnoteUtils.updateLocalGNote(name, JSON.stringify({
+        gnoteFsUtils.updateLocalGNote(name, JSON.stringify({
             name,
             commitMsg,
-            content
+            content: Base64.encode(content)
         }));
     }
 };

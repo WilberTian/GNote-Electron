@@ -1,4 +1,3 @@
-import { Base64 } from 'js-base64';
 import { markdown } from 'markdown';
 
 // import services from '../../services/contentService';
@@ -49,7 +48,7 @@ const domain = {
                 return {
                     ...model,
                     activeNoteName: name,
-                    activeNoteContent: markdown.toHTML(Base64.decode(content)),
+                    activeNoteContent: markdown.toHTML(content),
                     contentLoading: false
                 };
             });

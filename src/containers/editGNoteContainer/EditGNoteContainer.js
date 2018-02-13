@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Input, Button } from 'antd';
-import { Base64 } from 'js-base64';
+import { Input, Button, message } from 'antd';
 
 import DomainComponentCreator from '../../utils/DomainComponentCreator';
 import DomainMapper from '../../utils/DomainMapper';
@@ -47,7 +46,7 @@ export default class EditGNoteContainer extends PureComponent {
             const content = getNoteContent(location.query.name);
             this.setState({
                 name: location.query.name,
-                content: Base64.decode(content),
+                content,
                 createMode: false
             });
         }
@@ -74,9 +73,13 @@ export default class EditGNoteContainer extends PureComponent {
     _onSave() {
         const { saveNote } = this.props;
         const { name, commitMsg, content } = this.state;
-        saveNote(name, commitMsg, content);
 
-        history.back();
+        try {
+            saveNote(this.state.createMode, name, commitMsg, content);
+            history.back();
+        } catch (e) {
+            message.error(e.message, 5);
+        }
     }
 
     _onCancel() {
