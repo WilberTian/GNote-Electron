@@ -1,6 +1,6 @@
 import { markdown } from 'markdown';
 
-// import services from '../../services/contentService';
+import githubService from '../../services/githubService';
 import localService from '../../services/localService';
 
 const domain = {
@@ -11,7 +11,9 @@ const domain = {
 
         activeNoteName: '',
         activeNoteContent: '',
-        contentLoading: false
+        contentLoading: false,
+
+        onlineStatus: navigator.onLine
     },
 
     action: {
@@ -23,18 +25,37 @@ const domain = {
                 };
             });
 
-            const result = localService.getLocalNoteList();
+            let localNoteList = localService.getLocalNoteList();
+            let githubNoteList = [];
+
+            if (domain.getCurrentModel().onlineStatus) {
+                githubNoteList = await githubService.getNoteList();
+
+                githubNoteList.forEach((githubNoteItem) => {
+                    const found = localNoteList.find((localNoteItem) => {
+                        return localNoteItem.name === githubNoteItem.name;
+                    });
+
+                    if (!found) {
+                        localService.createLocalNote(githubNoteItem);
+                    } else {
+                        //
+                    }
+                });
+            }
+
+            localNoteList = localService.getLocalNoteList();
 
             domain.dispatch((model) => {
                 return {
                     ...model,
-                    contentList: result,
+                    contentList: localNoteList,
                     listLoading: false
                 };
             });
         },
 
-        getNoteContent: (name) => {
+        getNoteContent: async (name) => {
             domain.dispatch((model) => {
                 return {
                     ...model,
@@ -42,7 +63,18 @@ const domain = {
                 };
             });
 
-            const content = localService.getLocalNoteData(name).content;
+            let content = 'Can not fetch content since it is offline';
+            const loacalNoteData = localService.getLocalNoteData(name);
+            if ('content' in loacalNoteData) {
+                content = loacalNoteData.content;
+            } else if ('path' in loacalNoteData) {
+                if (domain.getCurrentModel().onlineStatus) {
+                    const data = await githubService.getNoteContent(loacalNoteData.path);
+                    localService.updateLocalNote(data, false);
+
+                    content = localService.getLocalNoteData(name).content;
+                }
+            }
 
             domain.dispatch((model) => {
                 return {
@@ -61,6 +93,15 @@ const domain = {
         deleteNote: async () => {
             //
         },
+
+        updateOnlineStatus: (onlineStatus) => {
+            domain.dispatch((model) => {
+                return {
+                    ...model,
+                    onlineStatus
+                };
+            });
+        }
     }
 };
 

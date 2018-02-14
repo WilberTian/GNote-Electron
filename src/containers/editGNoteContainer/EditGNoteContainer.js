@@ -140,12 +140,12 @@ export default class EditGNoteContainer extends PureComponent {
                 </div>
                 <MDEditorComponent content={this.state.content} callback={::this._onContentChange} />
                 <div>
-                    <Checkbox
+                    {!this.state.createMode && <Checkbox
                       onChange={::this._toggleAutoSave}
                       checked={this.state.isAutoSave}
                     >
                         AutoSave
-                    </Checkbox>
+                    </Checkbox>}
                     <ButtonGroup className="btn-group">
                         <Button icon="save" onClick={::this._onSave} disabled={this.state.name === ''}>save</Button>
                         <Button onClick={::this._onCancel}>Cancel</Button>

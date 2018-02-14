@@ -7,18 +7,19 @@ import './content-header-component.less';
 const mapper = {
     modelMapper: (model) => {
         return {
-            activeNoteName: model.activeNoteName
+            activeNoteName: model.activeNoteName,
+            onlineStatus: model.onlineStatus
         };
     },
-    actionMapper: () => {}
+    actionMapper: (action) => {
+        return {
+            updateOnlineStatus: action.updateOnlineStatus
+        };
+    }
 };
 
 @DomainMapper(mapper)
 export default class ContentHeaderComponent extends PureComponent {
-    state = {
-        onlineStatus: false
-    };
-
     componentWillMount() {
         window.addEventListener('online', this._updateOnlineStatus);
         window.addEventListener('offline', this._updateOnlineStatus);
@@ -32,25 +33,23 @@ export default class ContentHeaderComponent extends PureComponent {
     }
 
     _updateOnlineStatus() {
+        const { updateOnlineStatus } = this.props;
         const { ipcRenderer } = window.require('electron');
 
-        const onlineStatus = navigator.onLine ? 'online' : 'offline';
-        ipcRenderer.send('online-status-change-event', onlineStatus);
+        ipcRenderer.send('online-status-change-event', navigator.onLine ? 'online' : 'offline');
 
-        this.setState({
-            onlineStatus
-        });
+        updateOnlineStatus(navigator.onLine);
     }
 
     render() {
-        const { activeNoteName } = this.props;
+        const { activeNoteName, onlineStatus } = this.props;
 
         return (
             <div className="content-header-component">
                 <span className="active-note-name">
                     {activeNoteName}
                 </span>
-                {this.state.onlineStatus ?
+                {onlineStatus ?
                     <span className="online-status online">Online</span> :
                     <span className="online-status offline">Offline</span>
                 }

@@ -17,7 +17,7 @@ export default {
 
     getNoteContent: async (path) => {
         const fetchConfig = {
-            url: `${prefix}/contents/${path}`
+            url: `${prefix}/${path}`
         };
 
         const data = await fetch(fetchConfig);

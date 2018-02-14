@@ -7,9 +7,9 @@ const domain = {
     action: {
         saveNote: (isCreate, name, commitMsg, content) => {
             if (isCreate) {
-                localService.createLocalNote(name, commitMsg, content);
+                localService.createLocalNote({ name, commitMsg, content });
             } else {
-                localService.updateLocalNote(name, commitMsg, content);
+                localService.updateLocalNote({ name, commitMsg, content });
             }
         },
 

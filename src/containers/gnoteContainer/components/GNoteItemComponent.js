@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Button, message } from 'antd';
 
+import * as gnoteStatus from '../../../configs/gnoteStatus';
+
 import './gnote-item-component.less';
 
 import DomainMapper from '../../../utils/DomainMapper';
@@ -41,19 +43,44 @@ export default class GNoteItemComponent extends PureComponent {
         return (
             <div
               className={`gnote-item-component ${activeNoteName === contentItem.name ? 'active' : ''}`}
-              
             >
-                <span className="item-name" onClick={::this._onGNoteItemSelect}>
-                    {contentItem.name}
-                </span>
-                <span className="item-status">
-                    {contentItem.isDraft}
-                </span>
-                <ButtonGroup className="item-btn-group">
-                    <Button icon="edit" onClick={() => { this._editGNoteItem(contentItem.name); }} />
-                    <Button icon="cloud-upload" />
-                    <Button icon="cloud-download" />
-                </ButtonGroup>
+                {contentItem.status === gnoteStatus.NOT_SYNCED && <div className="not-synced-item">
+                    <span className="item-name">
+                        {contentItem.name}
+                    </span>
+                    <span className="item-status">
+                        {contentItem.status}
+                    </span>
+                    <ButtonGroup className="item-btn-group">
+                        <Button icon="cloud-download" />
+                    </ButtonGroup>
+                </div>}
+
+                {contentItem.status === gnoteStatus.SYNCED && <div className="synced-item">
+                    <span className="item-name" onClick={::this._onGNoteItemSelect}>
+                        {contentItem.name}
+                    </span>
+                    <span className="item-status">
+                        {contentItem.status}
+                    </span>
+                    <ButtonGroup className="item-btn-group">
+                        <Button icon="edit" onClick={() => { this._editGNoteItem(contentItem.name); }} />
+                    </ButtonGroup>
+                </div>}
+
+                {contentItem.status === gnoteStatus.DRAFT && <div className="draft-item">
+                    <span className="item-name" onClick={::this._onGNoteItemSelect}>
+                        {contentItem.name}
+                    </span>
+                    <span className="item-status">
+                        {contentItem.status}
+                    </span>
+                    <ButtonGroup className="item-btn-group">
+                        <Button icon="edit" onClick={() => { this._editGNoteItem(contentItem.name); }} />
+                        <Button icon="cloud-upload" />
+                        <Button icon="cloud-download" />
+                    </ButtonGroup>
+                </div>}
             </div>
         );
         /* eslint-enable */

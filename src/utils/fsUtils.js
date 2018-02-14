@@ -1,4 +1,5 @@
 import { GNoteFsError } from '../errors';
+import * as gnoteStatus from '../configs/gnoteStatus';
 
 const path = require('path');
 const fs = require('fs');
@@ -15,14 +16,6 @@ const isFileExist = (fsPath) => {
     return true;
 };
 
-const isLocalDraft = (data) => {
-    if ('commitMsg' in data) {
-        return true;
-    }
-
-    return false;
-};
-
 export const getLocalGNoteList = () => {
     const gnoteList = [];
 
@@ -33,8 +26,18 @@ export const getLocalGNoteList = () => {
         const gnoteItemContent = fs.readFileSync(gnoteItemPath);
 
         const gnoteItemObj = JSON.parse(gnoteItemContent, 'utf8');
+
+        let status = '';
+        if ('commitMsg' in gnoteItemObj) {
+            status = gnoteStatus.DRAFT;
+        } else if (!('commitMsg' in gnoteItemObj) && !('content' in gnoteItemObj)) {
+            status = gnoteStatus.NOT_SYNCED;
+        } else if (!('commitMsg' in gnoteItemObj) && ('content' in gnoteItemObj)) {
+            status = gnoteStatus.SYNCED;
+        }
+
         gnoteList.push({
-            isDraft: isLocalDraft(gnoteItemObj),
+            status,
             name: gnoteItemObj.name
         });
     });
